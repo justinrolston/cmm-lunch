@@ -1,12 +1,14 @@
 require 'Date'
 
 class CmmLunch
-  def self.get_menu(rawmenu)
-    lines =  rawmenu.split("\n\n")
+  DOUBLE_BREAK = "\n\n"
+  SINGLE_BREAK = "\n"
+
+  def self.menu(rawmenu)
     menu = {}
-    lines.each do |line|
+    rawmenu.split(DOUBLE_BREAK).each do |line|
       if lunch_line?(line)
-        item = line.split("\n")
+        item = line.split(SINGLE_BREAK)
         menu[item[0].strip.to_sym] = [item[1],item[2]]
       end
     end
@@ -15,6 +17,6 @@ class CmmLunch
 
   private
   def self.lunch_line?(entry_line)
-    return Date::DAYNAMES.any?{|d|  entry_line.split("\n")[0].include? d}
+    return Date::DAYNAMES.any?{|day|  entry_line.split(SINGLE_BREAK)[0].include? day}
   end
 end
